@@ -22,28 +22,28 @@ client.commands = new Collection();
 client.prefix = PREFIX;
 client.queue = new Map();
 const cooldowns = new Collection();
-const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /**
  * Client Events
  */
 client.on("ready", () => {
   console.log(`${client.user.username} ready!`);
-  client.user.setActivity(`${PREFIX}help and ${PREFIX}play`, { type : "LISTENING" });
+  client.user.setActivity(`${PREFIX}help and ${PREFIX}play`, { type: "LISTENING" });
 });
-client.on("warn", (info) => console.log(info));
+client.on("warn", info => console.log(info));
 client.on("error", console.error);
 
 /**
  * Import all commands
  */
-const commandFiles = readdirSync(join(__dirname, "commands")).filter((file) => file.endsWith(".js"));
+const commandFiles = readdirSync(join(__dirname, "commands")).filter(file => file.endsWith(".js"));
 for (const file of commandFiles) {
   const command = require(join(__dirname, "commands", `${file}`));
   client.commands.set(command.name, command);
 }
 
-client.on("message", async (message) => {
+client.on("message", async message => {
   if (message.author.bot) return;
   if (!message.guild) return;
 
@@ -52,12 +52,15 @@ client.on("message", async (message) => {
 
   const [, matchedPrefix] = message.content.match(prefixRegex);
 
-  const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
+  const args = message.content
+    .slice(matchedPrefix.length)
+    .trim()
+    .split(/ +/);
   const commandName = args.shift().toLowerCase();
 
   const command =
     client.commands.get(commandName) ||
-    client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
+    client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
   if (!command) return;
 
@@ -90,3 +93,32 @@ client.on("message", async (message) => {
     message.reply("There was an error executing that command.").catch(console.error);
   }
 });
+
+client.on("message", msg => {
+  if (msg.content === "malam") {
+    msg.reply(
+      "Mimpimu malam ini ku harap indah, Seindah apa yang kamu lihat ketika bunga-bunga merekah Di taman mimpimu berteman dengan peri-peri, Merasakan Keharuman bunga-bunga yang tak berduri, Semoga harapan esok kan terwujud jadi nyata. Selamat Malam dan Selamat Tidur yach sayang."
+    );
+  }
+});
+
+client.on("message", async msg => {
+  if (msg.content === "siang") {
+    msg.reply("Siang juga kamu yang lagi beraktifitas");
+  }
+});
+
+client.on("message", msg => {
+  if (msg.content === "morning") {
+    msg.reply(
+      "Selamat pagi untuk kamu yang sempat pergi namun balik lagi ke aku. Semoga kamu gak pergi ke lain hati lagi ya"
+    );
+  }
+});
+
+client.on("message", msg => {
+  if (msg.content === "hallo") {
+    msg.reply("Hallo Juga Kawanku :)");
+  }
+});
+client.login("NzcwMzkzMDYzNTU3NjkzNDky.X5c6cw.c8gAZ5vk0DvH7G-wc1xD1hKoBIQ");
